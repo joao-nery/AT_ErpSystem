@@ -1,10 +1,11 @@
-AT-ERPSystem ! - Em desenvolvimento!
+<h1>AT-ERPSystem</h1>
+<h2>(Em desenvolvimento)</h2>
 
 <!-- <p align="center">
 <img src="URL_DA_SUA_IMAGEM_DE_TELA_AQUI" width="700" alt="Tela de Dashboard">
 </p> -->
 
-<p align="center">
+<p align="left">
 Um sistema ERP (Enterprise Resource Planning) gratuito e de código aberto, criado para empoderar micro e pequenos empreendedores que não têm condições de investir em softwares caros e complexos.
 </p>
 
@@ -16,27 +17,25 @@ Acreditamos que a tecnologia pode ser uma poderosa ferramenta de inclusão e cre
 
 Este projeto está sendo construído com as mais modernas tecnologias do ecossistema JavaScript/TypeScript, visando performance, escalabilidade e uma ótima experiência de desenvolvimento.
 
-Front-end:
-NextJS:
-<a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-<img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="nextjs" width="40" height="40"/>
-</a>
-
-ReactJS:
-<a href="https://reactjs.org/" target="_blank" rel="noreferrer">
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/>
-</a>
-
-TypeScript:
-<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
-</a>
-
-Back-end:
-NestJS:
-<a href="https://nestjs.com/" target="_blank" rel="noreferrer">
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/NestJS.svg" alt="nestjs" width="40" height="40"/>
-</a>
+<p align="left">
+  <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
+  <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="nextjs" width="40" height="40"/>
+  </a>
+  
+  
+  <a href="https://reactjs.org/" target="_blank" rel="noreferrer">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/>
+  </a>
+  
+  
+  <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
+  </a>
+  
+  <a href="https://nestjs.com/" target="_blank" rel="noreferrer">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/NestJS.svg" alt="nestjs" width="40" height="40"/>
+  </a>
+</p>
 
 Banco de Dados: Postgres SQL
 

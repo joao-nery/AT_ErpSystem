@@ -1,0 +1,12 @@
+
+.gitignore
+# NextJS
+node_modules
+.next
+next-env.d.ts
+
+# NestJS
+node_modules
+dist
+test
+.env

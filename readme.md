@@ -13,6 +13,8 @@ Um sistema ERP (Enterprise Resource Planning) gratuito e de código aberto, cria
 
 Acreditamos que a tecnologia pode ser uma poderosa ferramenta de inclusão e crescimento. A missão deste projeto é oferecer uma solução de gestão empresarial simples, eficiente e totalmente gratuita para autônomos, micro e pequenas empresas, ajudando a organizar e impulsionar seus negócios. Queremos democratizar o acesso a ferramentas de gestão de qualidade, independentemente da capacidade financeira do empreendedor.
 
+<hr>
+
 🚀 Tecnologias Utilizadas
 
 Este projeto está sendo construído com as mais modernas tecnologias do ecossistema JavaScript/TypeScript, visando performance, escalabilidade e uma ótima experiência de desenvolvimento.
@@ -37,7 +39,7 @@ Este projeto está sendo construído com as mais modernas tecnologias do ecossis
   </a>
 </p>
 
-Banco de Dados: Postgres SQL
+<hr>
 
 📋 Funcionalidades Principais
 
@@ -49,6 +51,8 @@ Aqui você pode listar as funcionalidades que seu ERP já possui ou que estão p
     Financeiro Simplificado: Controle de contas a pagar e a receber.
     Dashboard Intuitivo: Visualização rápida dos principais indicadores do negócio.
 
+<hr>
+
 🖼️ Telas da Aplicação:
 
 <!-- <p align="center">
@@ -56,6 +60,8 @@ Aqui você pode listar as funcionalidades que seu ERP já possui ou que estão p
 </p> -->
 
 Sera disponibilizado um passo a passo de clonagem do repositório!
+
+<hr>
 
 🤝 Como Contribuir
 

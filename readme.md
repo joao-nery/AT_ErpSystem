@@ -16,9 +16,27 @@ Acreditamos que a tecnologia pode ser uma poderosa ferramenta de inclusão e cre
 
 Este projeto está sendo construído com as mais modernas tecnologias do ecossistema JavaScript/TypeScript, visando performance, escalabilidade e uma ótima experiência de desenvolvimento.
 
-Front-end: NextJS, TailwindCSS, ReactJS, TypeScript 
+Front-end:
+NextJS:
+<a href="https://nextjs.org/" target="_blank" rel="noreferrer">
+<img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="nextjs" width="40" height="40"/>
+</a>
 
-Back-end: NestJS - API REST
+ReactJS:
+<a href="https://reactjs.org/" target="_blank" rel="noreferrer">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/>
+</a>
+
+TypeScript:
+<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
+</a>
+
+Back-end:
+NestJS:
+<a href="https://nestjs.com/" target="_blank" rel="noreferrer">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/NestJS.svg" alt="nestjs" width="40" height="40"/>
+</a>
 
 Banco de Dados: Postgres SQL
 

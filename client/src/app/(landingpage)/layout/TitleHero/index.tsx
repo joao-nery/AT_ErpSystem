@@ -5,54 +5,50 @@ import Link from "next/link";
 
 export function TitleHero() {
   return (
-    <main className="h-[750px] mb-40 w-full flex flex-col dark:bg-[0f0f0f] justify-center items-center">
+    <main className="h-[calc(100dvh-60px)] mb-40 w-full flex flex-col dark:bg-[0f0f0f] justify-center items-center">
       <section className="flex flex-col lg:flex-row justify-center items-center lg:gap-10">
-        <header className="flex flex-col w-[350px] md:w-[600px] lg:w-[600px] xl:w-[800px] md:px-10">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold">
-            Otimize Sua Gestão Empresarial com o AT-ERP
+        {/* ---Header---- */}
+        <header className="flex flex-col justify-center items-center w-[450px] md:w-[600px] lg:w-[900px] xl:w-[1200px]">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center">
+            O Controle Total do seu Negócio na Palma da Mão.
           </h1>
-          <h2 className="text-md mt-5 text-muted-foreground mx-auto">
-            Controle financeiro, fluxo de caixa, contas a pagar/receber e muito
-            mais, tudo em um só lugar. Acesso fácil, onde você estiver
-          </h2>
 
-          <div className="flex gap-5 items-center mb-10 mt-10">
-            <Button
-              variant="outline"
-              className="cursor-pointer dark:bg-black bg-white text-black dark:text-white">
-              <Link href="/pages/register">Acesse Grátis Agora!</Link>
-            </Button>
-            <Button className="cursor-pointer">
-              <Link href="/pages/login">Já sou cliente!</Link>
-            </Button>
+          <div className="flex  items-center gap-5 justify-center">
+            <Image
+              src="/devicecomputer.png"
+              alt="Devices"
+              width={250}
+              height={0}
+              className="md:w-[330px] lg:w-[350px]"
+            />
+            <Image
+              src="/Devices.png"
+              alt="Devices"
+              width={100}
+              height={0}
+              className="relative top-10 -ml-20 lg:-ml-30 md:-ml-30 md:top-15 md:w-[140px] lg:w-[150px]"
+            />
           </div>
-        </header>
+          <p className="text-md md:text-xl mt-20 md:w-[600px] xl:w-[900px] xl:text-2xl xl:leading-9 text-[#958B8B] leading-6 mx-auto text-center">
+            Organize suas vendas, clientes, estoque e finanças em um só lugar.
+            De forma fácil, rápida e que cabe no seu bolso.
+          </p>
 
-        <div className="flex items-center gap-5 justify-center">
-          <Image
-            src="/devicecomputer.png"
-            alt="Devices"
-            width={250}
-            height={0}
-            className="md:w-[330px] lg:w-[400px]"
-          />
-          <Image
-            src="/Devices.png"
-            alt="Devices"
-            width={100}
-            height={0}
-            className="relative top-10 -ml-20 lg:-ml-30 md:-ml-30 md:top-15 md:w-[160px] lg:w-[170px]"
-          />
-        </div>
+          <Button
+            variant="default"
+            className="cursor-pointer py-6 px-8 xl:py-8 xl:px-10 rounded-2xl mt-10">
+            <Link href="/pages/register" className="xl:text-xl">
+              Começe a organizar agora
+            </Link>
+          </Button>
+        </header>
+        {/* ---Header---- */}
       </section>
 
-      <div className="flex flex-col relative top-30 gap-1 hover:text-gray-600 items-center">
-        <ChevronDownCircle
-          className="animate-bounce cursor-pointer"
-          size={30}
-        />
-        <p>Saiba Mais</p>
-      </div>
+      {/* <div className="flex flex-col relative top-30 gap-1 hover:text-gray-600 items-center">
+        <ChevronDownCircle className="animate-bounce cursor-pointer size-10 xl:size-12" />
+        <p className="xl:text-xl">Saiba Mais</p>
+      </div> */}
     </main>
   );
 }

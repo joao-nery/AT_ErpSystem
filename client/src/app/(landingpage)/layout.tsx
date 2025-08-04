@@ -2,11 +2,14 @@ import { Navbar } from "@/app/(landingpage)/layout/Navbar";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "ERP System - Seu Sistema de Gestão",
   description: "ERP System - Seu Sistema de Gestão",
 };
+
+const dmSans = DM_Sans();
 
 export default function landingLayout({
   children,
@@ -16,7 +19,7 @@ export default function landingLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <title>ERP System - Seu Sistema de Gestão</title>
-      <body>
+      <body className={`${dmSans.className}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
           {children}

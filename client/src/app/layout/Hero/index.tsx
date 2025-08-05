@@ -9,7 +9,7 @@ export function Hero() {
         <h1
           className="
         text-4xl  w-[398px]
-        md:text-5xl  md:w-[550px]
+        md:text-5xl  md:w-[650px]
         lg:text-6xl  lg:w-[750px]
         xl:text-7xl xl:w-[1150px]
         text-center font-bold
@@ -32,6 +32,7 @@ export function Hero() {
         <Button
           className="
             w-[200px] h-[50px] rounded-[60px]
+            md:w-[250px] md:h-[70px] md:text-lg
             xl:w-[300px] xl:h-[80px] xl:text-xl
           bg-rose-600 hover:bg-rose-700">
           <Link href="pages/register" className="">

@@ -4,12 +4,19 @@ import { HandCoins, Handshake, PiggyBank } from "lucide-react";
 export function Features() {
   return (
     <main className="h-[1500px] flex flex-col justify-center items-center">
-      <h1 className="text-3xl text-center font-bold leading-8 xl:text-5xl">
+      <h1
+        className="
+        text-3xl text-center font-bold 
+        md:text-4xl md:w-[700px]  
+        xl:text-5xl">
         Deixe de Apenas Anotar, Comece a Analisar.
       </h1>
 
-      <div className="p-12 flex flex-col xl:grid xl:grid-cols-3 mt-10 gap-5 xl:*:w-[450px] xl:*:relative *:rounded-[30px] *:shadow *:py-7 *:px-10">
-        <Card className="bg-[#F9DC5C] xl:left-65">
+      <div
+        className="
+        *:p-10 *:md:w-[500px]
+        p-10 grid gap-5">
+        <Card className="bg-[#F9DC5C]">
           <CardHeader>
             <div className="flex items-center gap-5">
               <PiggyBank size={60} />
@@ -19,14 +26,14 @@ export function Features() {
             </div>
           </CardHeader>
           <CardContent className="-mt-5">
-            <p className="text-[#707070] ">
+            <p className="text-[#707070]">
               Controle suas despesas e receitas de forma simples. Veja seu fluxo
               de caixa e entenda de verdade se o seu negócio está dando lucro.
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-[#27292B] text-white xl:top-75">
+        <Card className="bg-[#27292B] text-white">
           <CardHeader>
             <div className="flex items-center gap-5">
               <Handshake size={60} />
@@ -44,7 +51,7 @@ export function Features() {
           </CardContent>
         </Card>
 
-        <Card className="bg-[#ED254E] text-white xl:right-50 xl:top-5">
+        <Card className="bg-[#ED254E] text-white">
           <CardHeader>
             <div className="flex items-center gap-5">
               <HandCoins size={60} />

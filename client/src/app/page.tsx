@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <main className="w-full flex-col flex justify-center items-center">
       <Hero />
-      {/* <Features />
-      <Confidence />
+      <Features />
+      {/* <Confidence />
       <ContentCTA />
       <Footer /> */}
     </main>

@@ -2,13 +2,13 @@ import Image from "next/image";
 
 export default function Confidence() {
   return (
-    <main className="h-[calc(1000px)] flex flex-col justify-center items-center  ">
-      <section className="flex xl:justify-center gap-20">
-        <div className="w-1/3">
-          <h1 className="text-3xl xl:text-5xl xl:text-left font-bold ">
+    <main className="h-[1300px] flex flex-col justify-center items-center  ">
+      <section className="p-10 md:flex lg:px-20 gap-10 items-center justify-center">
+        <div className="lg:w-[500px]">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold">
             Cansamos do Jogo Injusto. Por isso, Criamos a Solução.
           </h1>
-          <p className="mt-10 text-xl text-[#414141]">
+          <p className="mt-10 lg:text-xl text-foreground">
             Sabemos como é. Você trabalha duro, faz tudo acontecer, mas sente
             que as ferramentas de gestão são feitas para os grandes. Sistemas
             caros, complexos, cheios de funções que você nunca vai usar.
@@ -23,10 +23,16 @@ export default function Confidence() {
         </div>
         <Image
           src="/Wavy_Bus-29_Single-03.jpg"
-          width="450"
-          height="400"
+          width="1000"
+          height="1000"
           alt="Image"
-          className="mt-15 xl:mt-0"
+          className="
+            mt-15 
+            w-[400px]
+            md:w-[300px]
+            lg:w-[400px]
+            xl:w-[500px]
+            xl:mt-0 "
         />
       </section>
     </main>

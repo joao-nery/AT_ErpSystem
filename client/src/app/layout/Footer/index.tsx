@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="bg-neutral-900 w-full h-[500px] dark:bg-neutral-900 p-5 text-white  flex flex-col justify-center items-center">
+    <footer className="bg-neutral-900 w-full h-[250px] dark:bg-neutral-900 p-5 text-white  flex flex-col justify-center items-center">
       <div className="text-center">
         <h1 className="text-2xl font-bold">
           AT-ERP <span className="text-[#ED254E]">System</span>

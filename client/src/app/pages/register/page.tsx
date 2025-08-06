@@ -14,12 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Badge } from "@/components/ui/badge";
-
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BoxIcon, ChromeIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -97,43 +94,43 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="h-[calc(100vh-69px)] pb-20 w-full flex flex-col justify-center items-center bg-neutral-100 dark:bg-neutral-900">
-      <div className="flex mb-6 gap-2">
-        <Badge>
-          <BoxIcon />
-        </Badge>
-        <p>ERP-System.</p>
-      </div>
+    <main className="h-[calc(100dvh-65px)] bg-gradient-to-b to-red-400 from-rose-500  w-full flex flex-col justify-center items-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" py-15 px-5 h-max gap-5 dark:bg-[#0f0f0f]  w-[400px] rounded-xl shadow-2xl  flex flex-col justify-center">
-          <div>
-            <h1 className="text-2xl font-semibold text-center">Cadastro</h1>
-            <p className="text-sm text-center text-gray-400">Crie sua conta</p>
+          className="py-15 px-20 h-[550px] gap-5 border-2 bg-white border-gray-200  w-[350px] rounded-[30px] shadow-xl  flex flex-col justify-center
+            md:w-[450px]
+            lg:w-[550px]
+            xl:w-[550px] xl:h-[790px]
+          ">
+          <div className="text-center flex flex-col justify-center items-center">
+            <h1
+              className="
+            text-2xl font-semibold 
+            xl:text-3xl
+            ">
+              Bem vindo ao AT-ERP!
+            </h1>
+            <p
+              className="text-sm text-gray-500
+            w-[200px] xl:w-[300px] xl:text-xl
+            ">
+              Crie sua conta!
+            </p>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Button variant="outline">
-              <ChromeIcon />
-              Cadastrar-se com Google
-            </Button>
-          </div>
-
-          <hr />
-
-          <div className="flex flex-col gap-5 mt-5">
+          <div className="flex flex-col justify-center gap-5 mt-5">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome:</FormLabel>
+                  <FormLabel className="text-md">Nome</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      className="bg-white"
-                      placeholder="Digite seu nome"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="Informe seu nome"
                       {...field}
                     />
                   </FormControl>
@@ -146,12 +143,12 @@ export default function RegisterPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-mail:</FormLabel>
+                  <FormLabel className="text-md">E-mail</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      className="bg-white"
-                      placeholder="Digite seu e-mail"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="email@example.com"
                       {...field}
                     />
                   </FormControl>
@@ -165,12 +162,12 @@ export default function RegisterPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha:</FormLabel>
+                  <FormLabel className="text-md">Senha</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      className="bg-white"
-                      placeholder="Digite sua senha"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="**********"
                       {...field}
                     />
                   </FormControl>
@@ -178,18 +175,38 @@ export default function RegisterPage() {
                 </FormItem>
               )}
             />
-          </div>
 
-          <Button className="py-6 cursor-pointer" type="submit">
-            Registrar-se
-          </Button>
-          <div className="w-full ">
-            <p className="text-gray-500 dark:text-gray-400 text-sm text-center">
-              Ja possui uma conta?{" "}
-              <Link href="/pages/login" className="underline">
-                Login
-              </Link>
-            </p>
+            <Button
+              className="py-8 bg-[#ED254E] mt-7 rounded-[60px] shadow-card-foreground hover:bg-rose-700 text-lg cursor-pointer"
+              type="submit">
+              Registrar-se
+            </Button>
+
+            <hr className=" border-gray-300" />
+
+            <div className="w-full flex flex-col justify-center items-center gap-5">
+              <Button
+                variant="ghost"
+                className="border-2 xl:w-[300px] border-gray-300 py-7 rounded-full">
+                <svg
+                  className="size-5"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <title>Google</title>
+                  <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+                </svg>
+                <p>Registrar-se com o Google</p>
+              </Button>
+              <p className="text-gray-500 text-sm text-center">
+                Ja possui uma conta?{" "}
+                <Link
+                  href="/pages/login"
+                  className="underline text-black font-bold hover:text-gray-700">
+                  Faça Login
+                </Link>
+              </p>
+            </div>
           </div>
         </form>
       </Form>

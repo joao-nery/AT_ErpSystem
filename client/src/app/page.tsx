@@ -9,9 +9,9 @@ export default function Home() {
     <main className="w-full flex-col flex justify-center items-center">
       <Hero />
       <Features />
-      {/* <Confidence />
+      <Confidence />
       <ContentCTA />
-      <Footer /> */}
+      <Footer />
     </main>
   );
 }

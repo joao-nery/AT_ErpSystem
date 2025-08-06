@@ -49,83 +49,105 @@ export default function ForgotPassword() {
     window.location.replace("/Dashboard");
   }
 
-  function jaPossuiCadastro() {
-    window.location.replace("/");
-  }
-
   return (
-    <main className="h-screen w-full flex justify-center items-center bg-neutral-100 dark:bg-neutral-900">
+    <main className="h-[calc(100dvh-65px)] bg-gradient-to-b to-red-400 from-rose-500  w-full flex flex-col justify-center items-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" py-15 px-5 h-max gap-5 bg-white w-[400px] rounded-xl shadow-2xl flex flex-col justify-center dark:bg-neutral-800 dark:border-1 dark:border-neutral-700">
-          <h1 className="text-2xl font-semibold text-center pb-5">
-            ERP System - Tela de Atualizar Senha
-          </h1>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>E-mail:</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Digite o e-mail de sua loja..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          className=" py-15 px-20 h-[550px] gap-5 border-2 bg-white border-gray-200  w-[350px] rounded-[30px] shadow-xl  flex flex-col justify-center
+            md:w-[450px]
+            lg:w-[550px]
+            xl:w-[550px] xl:h-[790px]">
+          <div className="text-center flex flex-col justify-center items-center">
+            <h1
+              className="
+            text-2xl font-semibold 
+            xl:text-3xl
+            ">
+              Refefina sua senha!
+            </h1>
+            <p
+              className="text-sm text-gray-500
+            w-[200px] xl:w-[400px] xl:text-xl
+            ">
+              Preencha as informações abaixo, para resgatar sua conta!
+            </p>
+          </div>
+          <div className="flex flex-col justify-center gap-5 mt-5">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">E-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="email@example.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">Senha</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="**********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password:</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Digite sua senha"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">Senha</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      className="bg-gray-100 border-none py-6"
+                      placeholder="**********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirme sua senha:</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirme sua senha"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <Button
+              className="py-8 bg-[#ED254E] mt-7 rounded-[60px] shadow-card-foreground hover:bg-rose-700 text-lg cursor-pointer"
+              type="submit">
+              Redefinir senha
+            </Button>
 
-          <Button className="py-6 cursor-pointer" type="submit">
-            Submit
-          </Button>
-          <div className="flex justify-between">
-            <Link
-              onClick={jaPossuiCadastro}
-              href="#"
-              className="text-gray-400 hover:text-gray-500 text-sm">
-              Já possui acesso?
-            </Link>
+            <hr className=" border-gray-300" />
+
+            <div className="w-full flex flex-col justify-center items-center gap-5">
+              <p className="text-gray-500 text-sm text-center">
+                Ja possui uma conta?{" "}
+                <Link
+                  href="/pages/login"
+                  className="underline text-black font-bold hover:text-gray-700">
+                  Faça Login
+                </Link>
+              </p>
+            </div>
           </div>
         </form>
       </Form>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 import Link from "next/link";
 
@@ -17,21 +18,21 @@ export function Hero() {
           Um projeto OpenSource que viza ajudar aqueles que não podem!
         </h1>
 
-        {/* <Image
+        <Image
           src="/Macbook Pro.png"
           width="400"
           height="0"
           alt="Macbook Pro"
           className="
-            w-[340px]
-            md:w-[460px]
-            lg:w-[560px]
+            w-[300px]
+            md:w-[400px]
+            lg:w-[45s0px]
           "
-        /> */}
+        />
 
         <Button
           className="
-            w-[200px] h-[50px] rounded-[60px]
+            w-[200px] h-[50px] rounded-[60px] cursor-pointer shadow-card-foreground
             md:w-[250px] md:h-[70px] md:text-lg
             xl:w-[300px] xl:h-[80px] xl:text-xl
           bg-rose-600 hover:bg-rose-700">

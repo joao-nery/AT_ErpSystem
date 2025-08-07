@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
+import { SetCookie } from "../../actions/set-cookie";
 
 const formSchema = z.object({
   email: z
@@ -57,13 +58,9 @@ export default function LoginPage() {
 
     const { access_token } = await res.json();
 
-    await fetch("/api/set-cookie", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ access_token }),
-    });
+    await SetCookie(access_token).catch((error) =>
+      console.error(`error na função registrar cookie ${error}`)
+    );
 
     router.push("/core");
   }

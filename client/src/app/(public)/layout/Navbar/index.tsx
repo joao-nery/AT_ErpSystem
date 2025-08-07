@@ -17,9 +17,9 @@ export function Navbar() {
         </Link>
 
         <ul className="lg:flex gap-10 hidden text-gray-400 *:hover:text-gray-600 *:hover:underline *:cursor-pointer">
-          <li onClick={() => window.scroll({ top: 1000 })}>Features</li>
-          <li onClick={() => window.scroll({ top: 2600 })}>Confidence</li>
-          <li onClick={() => window.scroll({ top: 3700 })}>CTA</li>
+          <li onClick={() => window.scroll({ top: 1000 })}>Beneficios</li>
+          <li onClick={() => window.scroll({ top: 2600 })}>Confiança</li>
+          <li onClick={() => window.scroll({ top: 3700 })}>Vem Conosco!</li>
         </ul>
 
         <div className="md:flex items-center gap-2 hidden">

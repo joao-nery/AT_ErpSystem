@@ -1,39 +1,76 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { GetCookie } from "@/app/(erp)/core/actions/getCookie";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
+const formSchema = z.object({
+  description: z.string().min(2, {
+    message: "O usuário deve ter pelo menos 2 caracteres",
+  }),
 
-import { CircleXIcon } from "lucide-react";
-import { MouseEventHandler, useEffect } from "react";
-import { useForm } from "react-hook-form";
+  supplier: z.string().min(2, {
+    message: "O fornecedor deve ter pelo menos 2 caracteres",
+  }),
 
-import { formSchema } from "@/schemas/formSchema";
-import { GetProductForUUID } from "@/app/(erp)/actions/getProduct";
-import { GetCookie } from "@/app/(erp)/actions/getCookie";
+  barCode: z.string().min(10, {
+    message: "O código deve ter pelo menos 10 caracteres",
+  }),
+
+  reference: z.string().min(4, {
+    message: "A referência deve ter pelo menos 4 caracteres",
+  }),
+
+  size: z
+    .string()
+    .min(1, { message: "O tamanho deve ter pelo menos 1 caracteres" })
+    .max(4, {
+      message: "O tamanho deve ter pelo menos 4 caracteres",
+    }),
+
+  categories: z.string().min(2, {
+    message: "As categorias devem ter pelo menos 2 caracteres",
+  }),
+
+  quantity: z.string().min(1, {
+    message: "A quantidade deve ser maior que 0",
+  }),
+
+  salePrice: z
+    .string()
+    .min(1, {
+      message: "O preço de venda deve ser maior que 0",
+    })
+    .regex(/^[0-9,]+(\.[0-9]{1,2})?$/, {
+      message: "O preço de venda deve ser um número",
+    }),
+
+  purchasePrice: z
+    .string()
+    .min(1, {
+      message: "O preço de compra deve ser maior que 0",
+    })
+    .regex(/^[0-9,]+(\.[0-9]{1,2})?$/, {
+      message: "O preço de compra deve ser um número",
+    }),
+});
 
 type FormProps = z.infer<typeof formSchema>;
 
-// Começo do Componente ----------------------------------------------------------
-
-export function EditProductModal({
-  onClose,
-  id,
-}: {
-  onClose: MouseEventHandler<SVGSVGElement>;
-  id: string;
-}) {
+export default function RegisterProduct() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,25 +86,6 @@ export function EditProductModal({
     },
   });
 
-  // Busca os dados do produto pelo id
-  useEffect(() => {
-    async function updateForm() {
-      const product = await GetProductForUUID(id);
-
-      form.setValue("description", product.description);
-      form.setValue("barCode", product.barCode);
-      form.setValue("reference", product.reference);
-      form.setValue("supplier", product.supplier);
-      form.setValue("size", product.size.toString());
-      form.setValue("categories", product.categories);
-      form.setValue("quantity", product.quantity.toString());
-      form.setValue("salePrice", product.salePrice.toString());
-      form.setValue("purchasePrice", product.purchasePrice.toString());
-    }
-
-    updateForm();
-  }, [form, id]);
-
   function generateRandomBarCode() {
     const randomBarCode = Math.floor(Math.random() * 10000000000000);
     const stringRandomBarCode = randomBarCode.toString();
@@ -76,38 +94,50 @@ export function EditProductModal({
   }
 
   async function onSubmit(values: FormProps) {
-    // atualizar o produto
-    const res = await fetch(`http://localhost:3001/products/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await GetCookie()}`,
-      },
-      body: JSON.stringify(values),
-    });
+    const newFixedObject = {
+      ...values,
+      salePrice: values.salePrice.replace(",", "."),
+      purchasePrice: values.purchasePrice.replace(",", "."),
+    };
 
-    if (!res.ok) {
-      throw new Error("Failed to update user");
+    const token = await GetCookie();
+
+    try {
+      const res = await fetch("http://localhost:3001/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newFixedObject),
+      });
+
+      if (res.status === 400) {
+        alert("erro ");
+        throw new Error("Bad Request");
+      }
+
+      if (res.status === 409) {
+        alert("Produto ja cadastrado");
+        throw new Error("Produto ja cadastrado");
+      }
+
+      if (res.status === 201) {
+        alert("Produto cadastrado com sucesso");
+      }
+
+      form.reset();
+    } catch (error) {
+      console.log(`Error: ${error}`);
     }
-
-    console.log(`User with ID ${id} updated successfully`);
-    window.location.reload();
-    alert("Produto atualizado com sucesso!");
   }
-
   return (
-    <main className="border absolute top-1/20 left-3/7 -translate-x-1/4 p-5   bg-white dark:bg-neutral-800 rounded-2xl z-50 ">
-      <div>
-        <h1 className="text-2xl mb-3 font-semibold">Editar Produto</h1>
-        <CircleXIcon
-          className="absolute top-5 right-5 text-destructive cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
+    <main className="w-full p-10">
       <Form {...form}>
+        <h1 className="text-2xl font-semibold mb-5">Cadastro de Produtos</h1>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col border gap-10 p-5 w-full  shadow rounded-2xl">
+          className="flex flex-col border gap-10 p-10 w-full h-max shadow">
           <FormField
             control={form.control}
             name="description"
@@ -121,7 +151,7 @@ export function EditProductModal({
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-[12px]" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -139,7 +169,7 @@ export function EditProductModal({
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-[12px]" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -165,7 +195,7 @@ export function EditProductModal({
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage className="text-[12px]" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -183,7 +213,7 @@ export function EditProductModal({
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-[12px]" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -202,7 +232,7 @@ export function EditProductModal({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-[12px]" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -219,7 +249,7 @@ export function EditProductModal({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-[12px]" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -237,7 +267,7 @@ export function EditProductModal({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-[12px]" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -257,7 +287,7 @@ export function EditProductModal({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-[12px]" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -274,14 +304,14 @@ export function EditProductModal({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-[12px]" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <Button type="submit" className="py-3 w-40">
-            Atualizar
+          <Button type="submit" className="py-5 w-40">
+            Cadastrar
           </Button>
         </form>
       </Form>

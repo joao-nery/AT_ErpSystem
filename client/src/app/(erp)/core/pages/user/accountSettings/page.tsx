@@ -1,11 +1,11 @@
 "use client";
 
-import { GetUserForUUID } from "@/app/(erp)/actions/getuser";
+import { GetUserForUUID } from "@/app/(erp)/core/actions/getuser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
-import type { User } from "@/app/(erp)/actions/getuser";
+import type { User } from "@/app/(erp)/core/actions/getuser";
 import { Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 

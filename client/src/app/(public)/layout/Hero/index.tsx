@@ -26,7 +26,7 @@ export function Hero() {
           className="
             w-[300px]
             md:w-[400px]
-            lg:w-[45s0px]
+            lg:w-[450px]
           "
         />
 

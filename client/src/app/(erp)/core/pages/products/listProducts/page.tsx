@@ -1,6 +1,6 @@
 "use client";
 
-import { GetCookie } from "@/app/(erp)/actions/getCookie";
+import { GetCookie } from "@/app/(erp)/core/actions/getCookie";
 import {
   Table,
   TableBody,

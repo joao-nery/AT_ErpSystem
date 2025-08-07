@@ -46,10 +46,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut } from "@/app/(erp)/actions/signout";
-import { GetUserForUUID } from "@/app/(erp)/actions/getuser";
+import { LogOut } from "@/app/(erp)/core/actions/signout";
+import { GetUserForUUID } from "@/app/(erp)/core/actions/getuser";
 import { useEffect, useState } from "react";
-import type { User } from "@/app/(erp)/actions/getuser";
+import type { User } from "@/app/(erp)/core/actions/getuser";
 
 const data = [
   {

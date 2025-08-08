@@ -66,31 +66,59 @@ export default function RegisterPage() {
     });
 
     if (res.status === 409) {
-      toast("Usuário já existente", {
+      toast.warning("Usuário já existente", {
         position: "top-center",
-        description: "Este cadastro existente",
+        richColors: true,
         duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
       });
+
+      console.error("Error 409, usuário já existe na base de dados!");
+
+      setTimeout(() => {
+        return router.push("/pages/login");
+      }, 3000);
     }
 
-    if (!res.ok) {
-      toast("Ocorreu um erro ao realizar o cadastro!", {
+    if (res.status === 400) {
+      toast.error("Ocorreu um erro ao realizar o cadastro!", {
         position: "top-center",
-        description: "Internal Server Erro",
+        richColors: true,
         duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
       });
-      throw new Error("Erro ao cadastrar");
+      console.error("Erro ao cadastrar");
     }
 
-    toast("Cadastro realizado com sucesso!", {
-      position: "top-center",
-      description: "O cadastro foi realizado com sucesso!",
-      duration: 3000,
-    });
+    if (res.ok) {
+      toast.success("Cadastro Registrado com sucesso!", {
+        richColors: true,
+        duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
 
-    setInterval(() => {
-      router.push("/pages/login");
-    }, 2000);
+      setTimeout(() => {
+        return router.push("/pages/login");
+      }, 3000);
+    }
   }
 
   return (
@@ -211,7 +239,7 @@ export default function RegisterPage() {
         </form>
       </Form>
 
-      <Toaster />
+      <Toaster richColors />
     </main>
   );
 }

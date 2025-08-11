@@ -18,6 +18,8 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 import { SetCookie } from "../../actions/set-cookie";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const formSchema = z.object({
   email: z
@@ -51,8 +53,16 @@ export default function LoginPage() {
       body: JSON.stringify(values),
     });
 
+    // if (res.status == 400 || 500) {
+    //   toast.error("Erro", { position: "top-center", duration: 2000 });
+    //   // throw new Error("Erro interno no servidor");
+    // }
+
+    console.log(res.status);
+
     if (!res.ok) {
       alert("Usuário inválido");
+      toast.error("Erro", { position: "top-center", duration: 2000 });
       throw new Error("Não foi possivel fazer login, usuário não autenticado");
     }
 
@@ -161,6 +171,7 @@ export default function LoginPage() {
             </p>
           </div>
         </form>
+        <Toaster />
       </Form>
     </main>
   );

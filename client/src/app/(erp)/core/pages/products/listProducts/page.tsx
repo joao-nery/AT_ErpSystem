@@ -15,9 +15,6 @@ import { useEffect, useState } from "react";
 import { EditProductModal } from "./editProductModal";
 
 import type { ProductTypes } from "@/types/product.entity.types";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 
 // Começo do Componente ----------------------------------------------------------
 
@@ -187,23 +184,6 @@ export default function ListProducts() {
           id={product}
         />
       )}
-
-      <Button
-        className="py-3 w-40"
-        onClick={() =>
-          toast("Teste do Sonner", {
-            description: "Teste do sonner descrição",
-            style: { position: "absolute", left: "1/2" },
-            action: {
-              label: "Undo",
-              onClick: () => console.log("teste"),
-            },
-          })
-        }>
-        Teste Sonner
-      </Button>
-
-      <Toaster />
     </main>
   );
 }

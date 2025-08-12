@@ -5,6 +5,7 @@ import {
   BadgeDollarSignIcon,
   Bell,
   BoxIcon,
+  ChartAreaIcon,
   ChevronRight,
   ChevronsUpDownIcon,
   CoinsIcon,
@@ -51,167 +52,41 @@ import { GetUserForUUID } from "@/app/(erp)/core/actions/getuser";
 import { useEffect, useState } from "react";
 import type { User } from "@/app/(erp)/core/actions/getuser";
 
-const data = [
+const configsAppSidebar = [
   {
-    title: "Dashboard",
-    icon: <LayoutDashboard />,
+    module: "Meu Painel",
+    title: "Inicio",
+    icon: <ChartAreaIcon />,
+    lists: [{ title: "Dashboard", href: "/core" }],
+  },
+  {
+    module: "Dia a Dia",
+    title: "Operações",
+    icon: <HandCoinsIcon />,
     lists: [
-      {
-        title: "Dashboard",
-        href: "/core",
-      },
+      { title: "Registrar Venda", href: "/#" },
+      { title: "Registrar Despesa", href: "/#" },
+      { title: "Contas a Pagar", href: "/#" },
+      { title: "Contas a Receber", href: "/#" },
     ],
   },
   {
-    title: "Produtos",
+    module: "Organização",
+    title: "Cadastros",
     icon: <BoxIcon />,
     lists: [
       {
-        title: "Novo Produto",
-        href: "/core/pages/products/registerProduct",
+        title: "Cadastrar Produto",
+        href: "/core/pages/products/createProduct",
       },
       {
-        title: "Categorias",
-        href: "/core/pages/products/categories",
+        title: "Cadastrar Clientes",
+        href: "/core/pages/customers/createCustomer",
       },
+      { title: "Lista de Produtos", href: "/core/pages/products/listProducts" },
       {
-        title: "Listar Produtos",
-        href: "/core/pages/products/listProducts",
-      },
-    ],
-  },
-
-  {
-    title: "Clientes",
-    icon: <UserCircleIcon />,
-    lists: [
-      {
-        title: "Novo Cliente",
-        href: "/core/pages/clients/registerClient",
-      },
-      {
-        title: "Fornecedores",
-        href: "/core/pages/clients/registerSupplier",
-      },
-      {
-        title: "Listar Clientes",
-        href: "#",
-      },
-    ],
-  },
-
-  {
-    title: "Financeiro",
-    icon: <Landmark />,
-    lists: [
-      {
-        title: "Receitas",
-        href: "#",
-      },
-      {
-        title: "Despesas",
-        href: "#",
-      },
-    ],
-  },
-
-  {
-    title: "Fiscal",
-    icon: <FileIcon />,
-    lists: [
-      {
-        title: "Sintegra",
-        href: "#",
-      },
-      {
-        title: "Sped Fiscal",
-        href: "#",
-      },
-    ],
-  },
-
-  {
-    title: "Compras",
-    icon: <BadgeDollarSignIcon />,
-    lists: [
-      {
-        title: "Importar Compras",
-        href: "#",
-      },
-    ],
-  },
-
-  {
-    title: "Estoque",
-    icon: <BadgeCheck />,
-    lists: [
-      {
-        title: "Entrada de Estoque",
-        href: "#",
-      },
-      {
-        title: "Saida de Estoque",
-        href: "#",
-      },
-    ],
-  },
-
-  {
-    title: "Vendas",
-    icon: <CoinsIcon />,
-    lists: [
-      {
-        title: "Fazer Venda",
-        href: "#",
-      },
-    ],
-  },
-];
-
-const data2 = [
-  {
-    title: "Caixa",
-    icon: <HandCoinsIcon />,
-    lists: [
-      {
-        title: "Abrir caixa",
-        href: "#",
-      },
-    ],
-  },
-  {
-    title: "Venda",
-    icon: <CoinsIcon className="bg-amber-300 rounded" />,
-    lists: [
-      {
-        title: "Fazer Venda",
-        href: "#",
-      },
-    ],
-  },
-];
-
-const data3 = [
-  {
-    title: "Manuais do Sistemas",
-    icon: <FilePenLine />,
-    lists: [
-      {
-        title: "Documentação",
-        href: "#",
-      },
-    ],
-  },
-];
-
-const data4 = [
-  {
-    title: "Configurações",
-    icon: <Sparkles />,
-    lists: [
-      {
-        title: "Ajustes de Contas",
-        href: "#",
+        title: "Lista de Clientes",
+        href: "/core/pages/customers/listCustomers",
       },
     ],
   },
@@ -236,7 +111,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar variant="floating" collapsible="icon">
-      <SidebarHeader className="">
+      <SidebarHeader>
         <SidebarMenuButton size="lg">
           <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             ⌘
@@ -248,149 +123,41 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Módulo Gestão:</SidebarGroupLabel>
-          {data.map((item, index) => (
-            <SidebarMenu key={index}>
-              <Collapsible asChild>
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon}
-                      <div className="font-medium">{item.title}</div>
-                      <ChevronRight className="ml-auto transition-transform duration-200 hover:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuItem>
-                        {item.lists?.map((list, index) => (
-                          <SidebarMenuSubButton asChild key={index}>
-                            <div>
-                              <Link
-                                href={list.href}
-                                className="text-sm text-gray-600 dark:text-gray-300">
-                                {list.title}
-                              </Link>
-                            </div>
-                          </SidebarMenuSubButton>
-                        ))}
-                      </SidebarMenuItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            </SidebarMenu>
-          ))}
-        </SidebarGroup>
+        {configsAppSidebar.map((item, index) => (
+          <SidebarGroup key={index}>
+            <SidebarGroupLabel>{item.module}</SidebarGroupLabel>
+            <SidebarMenu>
+              <Collapsible defaultOpen>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    className="flex justify-between"
+                    tooltip={item.title}>
+                    <div className="flex items-center gap-2">
+                      <span className="cursor-pointer">{item.icon}</span>
+                      <p className="text-[15px]">{item.title}</p>
+                    </div>
+                    <ChevronRight />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Módulo PDV:</SidebarGroupLabel>
-          {data2.map((item, index) => (
-            <SidebarMenu key={index}>
-              <Collapsible asChild>
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon}
-                      <div className="font-medium">{item.title}</div>
-                      <ChevronRight className="ml-auto transition-transform duration-200 hover:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuItem>
-                        {item.lists?.map((list, index) => (
-                          <SidebarMenuSubButton asChild key={index}>
-                            <div>
-                              <Link
-                                href={list.href}
-                                className="text-sm text-gray-600 dark:text-gray-300">
-                                {list.title}
-                              </Link>
-                            </div>
-                          </SidebarMenuSubButton>
-                        ))}
-                      </SidebarMenuItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
+                {/* --- Conteúdo Colapisável --- */}
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.lists.map((list, listIndex) => (
+                      <div key={listIndex}>
+                        <Link
+                          className="text-[14px] text-muted-foreground flex items-center gap-2 px-3 py-1 hover:bg-muted hover:text-primary"
+                          href={list.href}>
+                          {list.title}
+                        </Link>
+                      </div>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
               </Collapsible>
             </SidebarMenu>
-          ))}
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Manuais do Sistema</SidebarGroupLabel>
-          {data3.map((item, index) => (
-            <SidebarMenu key={index}>
-              <Collapsible asChild>
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon}
-                      <div className="font-medium">{item.title}</div>
-                      <ChevronRight className="ml-auto transition-transform duration-200 hover:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuItem>
-                        {item.lists?.map((list, index) => (
-                          <SidebarMenuSubButton asChild key={index}>
-                            <div>
-                              <Link
-                                href={list.href}
-                                className="text-sm text-gray-600 dark:text-gray-300">
-                                {list.title}
-                              </Link>
-                            </div>
-                          </SidebarMenuSubButton>
-                        ))}
-                      </SidebarMenuItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            </SidebarMenu>
-          ))}
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Painel Administrador</SidebarGroupLabel>
-          {data4.map((item, index) => (
-            <SidebarMenu key={index}>
-              <Collapsible asChild>
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon}
-                      <div className="font-medium">{item.title}</div>
-                      <ChevronRight className="ml-auto transition-transform duration-200 hover:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuItem>
-                        {item.lists?.map((list, index) => (
-                          <SidebarMenuSubButton asChild key={index}>
-                            <div>
-                              <Link
-                                href={list.href}
-                                className="text-sm text-gray-600 dark:text-gray-300">
-                                {list.title}
-                              </Link>
-                            </div>
-                          </SidebarMenuSubButton>
-                        ))}
-                      </SidebarMenuItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            </SidebarMenu>
-          ))}
-        </SidebarGroup>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter>

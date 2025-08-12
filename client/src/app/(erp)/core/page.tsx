@@ -15,7 +15,7 @@ import { TrendingUp } from "lucide-react";
 export default function Home() {
   return (
     <main className="w-full p-10">
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 xl:grid gap-5">
         <Card className="">
           <CardHeader>
             <CardDescription>Total de vendas</CardDescription>
@@ -105,9 +105,9 @@ export default function Home() {
         </Card>
       </div>
 
-      <div className="mt-10 hidden xl:block">
+      {/* <div className="mt-10 hidden xl:block">
         <ChartBarInteractiveComponent />
-      </div>
+      </div> */}
     </main>
   );
 }

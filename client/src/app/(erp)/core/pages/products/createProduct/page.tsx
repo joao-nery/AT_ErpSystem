@@ -70,7 +70,7 @@ const formSchema = z.object({
 
 type FormProps = z.infer<typeof formSchema>;
 
-export default function RegisterProduct() {
+export default function Create() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {

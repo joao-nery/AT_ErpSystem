@@ -54,9 +54,10 @@ export default function ForgotPassword() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" py-15 px-20 h-[550px] gap-5 border-2 bg-white border-gray-200  w-[350px] rounded-[30px] shadow-xl  flex flex-col justify-center
+          className="  h-[650px] gap-5 border-2 bg-white border-gray-200   rounded-[30px] shadow-xl  flex flex-col justify-center
+            w-[350px] px-10
             md:w-[450px]
-            lg:w-[550px]
+            lg:w-[550px] lg:py-15 lg:px-20
             xl:w-[550px] xl:h-[790px]">
           <div className="text-center flex flex-col justify-center items-center">
             <h1
@@ -68,7 +69,7 @@ export default function ForgotPassword() {
             </h1>
             <p
               className="text-sm text-gray-500
-            w-[200px] xl:w-[400px] xl:text-xl
+            w-[300px] xl:w-[400px] xl:text-xl
             ">
               Preencha as informações abaixo, para resgatar sua conta!
             </p>

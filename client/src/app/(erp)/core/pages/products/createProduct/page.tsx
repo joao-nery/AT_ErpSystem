@@ -16,33 +16,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { BoxIcon } from "lucide-react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const formSchema = z.object({
-  description: z.string().min(2, {
-    message: "O usuário deve ter pelo menos 2 caracteres",
-  }),
-
-  supplier: z.string().min(2, {
-    message: "O fornecedor deve ter pelo menos 2 caracteres",
-  }),
-
-  barCode: z.string().min(10, {
-    message: "O código deve ter pelo menos 10 caracteres",
-  }),
-
-  reference: z.string().min(4, {
-    message: "A referência deve ter pelo menos 4 caracteres",
-  }),
-
-  size: z
-    .string()
-    .min(1, { message: "O tamanho deve ter pelo menos 1 caracteres" })
-    .max(4, {
-      message: "O tamanho deve ter pelo menos 4 caracteres",
-    }),
-
-  categories: z.string().min(2, {
-    message: "As categorias devem ter pelo menos 2 caracteres",
+  name: z.string().min(2, {
+    message: "O nome do produto deve ter pelo menos 2 caracteres",
   }),
 
   quantity: z.string().min(1, {
@@ -57,15 +37,6 @@ const formSchema = z.object({
     .regex(/^[0-9,]+(\.[0-9]{1,2})?$/, {
       message: "O preço de venda deve ser um número",
     }),
-
-  purchasePrice: z
-    .string()
-    .min(1, {
-      message: "O preço de compra deve ser maior que 0",
-    })
-    .regex(/^[0-9,]+(\.[0-9]{1,2})?$/, {
-      message: "O preço de compra deve ser um número",
-    }),
 });
 
 type FormProps = z.infer<typeof formSchema>;
@@ -74,206 +45,111 @@ export default function Create() {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: "",
-      barCode: "",
-      reference: "",
-      supplier: "",
-      size: "",
-      categories: "",
+      name: "",
       quantity: "",
       salePrice: "",
-      purchasePrice: "",
     },
   });
-
-  function generateRandomBarCode() {
-    const randomBarCode = Math.floor(Math.random() * 10000000000000);
-    const stringRandomBarCode = randomBarCode.toString();
-
-    form.setValue("barCode", stringRandomBarCode);
-  }
 
   async function onSubmit(values: FormProps) {
     const newFixedObject = {
       ...values,
       salePrice: values.salePrice.replace(",", "."),
-      purchasePrice: values.purchasePrice.replace(",", "."),
     };
 
     const token = await GetCookie();
 
-    try {
-      const res = await fetch("http://localhost:3001/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
+    const res = await fetch("http://localhost:3001/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newFixedObject),
+    });
+
+    const data = await res.json();
+
+    if (data.statusCode === 201) {
+      toast.success("Produto cadastrado com sucesso!", {
+        position: "top-center",
+        duration: 2000,
+        richColors: true,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
         },
-        body: JSON.stringify(newFixedObject),
       });
+      setTimeout(() => {
+        form.reset();
+      }, 1000);
+    }
 
-      if (res.status === 400) {
-        alert("erro ");
-        throw new Error("Bad Request");
-      }
+    if (data.statusCode === 400) {
+      toast.error("Erro ao cadastrar produto!", {
+        position: "top-center",
+        duration: 2000,
+        richColors: true,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+      throw new Error(data.message);
+    }
 
-      if (res.status === 409) {
-        alert("Produto ja cadastrado");
-        throw new Error("Produto ja cadastrado");
-      }
-
-      if (res.status === 201) {
-        alert("Produto cadastrado com sucesso");
-      }
-
-      form.reset();
-    } catch (error) {
-      console.log(`Error: ${error}`);
+    if (data.statusCode === 409) {
+      toast.error("Produto já cadastrado!", {
+        position: "top-center",
+        duration: 2000,
+        richColors: true,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+      throw new Error(data.message);
     }
   }
   return (
     <main className="w-full p-10">
       <Form {...form}>
-        <h1 className="text-2xl font-semibold mb-5">Cadastro de Produtos</h1>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col border gap-10 p-10 w-full h-max shadow">
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Descrição</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Descrição do produto"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="supplier"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fornecedor</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Fornecedor do produto"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="barCode"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Código de produto</FormLabel>
-                <FormControl>
-                  <div className="flex gap-5 w-full">
-                    <Input
-                      placeholder="Código do produto"
-                      type="text"
-                      {...field}
-                    />
-                    <Button
-                      onClick={generateRandomBarCode}
-                      type="button"
-                      className="w-max">
-                      Gerar Código
-                    </Button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="reference"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Referência</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Referência do produto"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-3 gap-5">
-            <FormField
-              control={form.control}
-              name="size"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tamanho</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Tamanho do produto"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="categories"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Categorias</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Categorias do produto"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantidade</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Quantidade do produto"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          className="flex flex-col border gap-10 p-10  h-max shadow">
+          <div className="flex flex-col gap-2 items-center">
+            <BoxIcon size={30} />
+            <h1 className="text-xl font-semibold mb-5  text-center">
+              Cadastro de Produtos
+            </h1>
           </div>
-
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome do Produto</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Nome do produto"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="salePrice"
@@ -293,16 +169,12 @@ export default function Create() {
             />
             <FormField
               control={form.control}
-              name="purchasePrice"
+              name="quantity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preço de Compra</FormLabel>
+                  <FormLabel>Quantidade</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Preço de Compra"
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Quantidade" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -315,6 +187,7 @@ export default function Create() {
           </Button>
         </form>
       </Form>
+      <Toaster />
     </main>
   );
 }

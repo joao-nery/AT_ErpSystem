@@ -53,21 +53,51 @@ export default function LoginPage() {
       body: JSON.stringify(values),
     });
 
-    console.log(res.status);
-
     if (!res.ok) {
-      alert("Usuário inválido");
-      toast.error("Erro", { position: "top-center", duration: 2000 });
-      throw new Error("Não foi possivel fazer login, usuário não autenticado");
+      toast.error("Usuário não existente, realize o cadastro", {
+        position: "top-center",
+        duration: 2000,
+        richColors: true,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
     }
 
     const { access_token } = await res.json();
+
+    if (!access_token) {
+      setTimeout(() => {
+        router.push("/pages/register");
+      }, 2000);
+
+      throw new Error("Token de acesso não encontrado");
+    }
 
     await SetCookie(access_token).catch((error) =>
       console.error(`error na função registrar cookie ${error}`)
     );
 
-    router.push("/core");
+    toast.success("Login Realizado com Sucesso!", {
+      position: "top-center",
+      duration: 2000,
+      richColors: true,
+      style: {
+        display: "flex",
+        justifyContent: "center",
+        fontSize: "15px",
+        alignItems: "center",
+        gap: "5px",
+      },
+    });
+
+    setTimeout(() => {
+      router.push("/core");
+    }, 2000);
   }
 
   return (

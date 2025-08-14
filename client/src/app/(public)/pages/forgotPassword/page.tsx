@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { useRouter } from "next/navigation";
 const formSchema = z.object({
   email: z
     .string()
@@ -24,17 +26,32 @@ const formSchema = z.object({
 
   confirmPassword: z
     .string()
-    .min(8, { message: "O usuário deve ter pelo menos 8 caracteres" })
-    .email(),
+    .min(8, { message: "A senha deve ter pelo menos 8 caracteres" })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      {
+        message:
+          "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial",
+      }
+    ),
 
   password: z
     .string()
-    .min(8, { message: "A senha deve ter pelo menos 8 caracteres" }),
+    .min(8, { message: "A senha deve ter pelo menos 8 caracteres" })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      {
+        message:
+          "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial",
+      }
+    ),
 });
 
 type FormProps = z.infer<typeof formSchema>;
 
 export default function ForgotPassword() {
+  const router = useRouter();
+
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,9 +61,93 @@ export default function ForgotPassword() {
     },
   });
 
-  function onSubmit(values: FormProps) {
-    console.log(values);
-    window.location.replace("/Dashboard");
+  async function onSubmit(values: FormProps) {
+    if (values.confirmPassword !== values.password) {
+      toast.error("As senhas não são iguais!", {
+        position: "top-center",
+        richColors: true,
+        duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+
+      throw new Error("As senhas não são iguais");
+    }
+
+    const newObject = {
+      email: values.email,
+      password: values.password,
+    };
+
+    const res = await fetch("http://localhost:3001/users/updatePassword", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newObject),
+    });
+
+    const data = await res.json();
+
+    console.log(data);
+
+    if (data.statusCode === 409) {
+      toast.error("A senha já utilizada, favor faça login!", {
+        position: "top-center",
+        richColors: true,
+        duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+
+      setTimeout(() => {
+        router.push("/pages/login");
+      }, 2000);
+    }
+
+    if (data.statusCode === 404) {
+      toast.error(data.message, {
+        position: "top-center",
+        richColors: true,
+        duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+    }
+
+    if (data.statusCode === 200) {
+      toast.success("Senha redefinida com sucesso!", {
+        position: "top-center",
+        richColors: true,
+        duration: 3000,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+
+      setTimeout(() => {
+        router.push("/pages/login");
+      }, 2000);
+    }
   }
 
   return (
@@ -98,10 +199,10 @@ export default function ForgotPassword() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-md">Senha</FormLabel>
+                  <FormLabel className="text-md">Nova Senha</FormLabel>
                   <FormControl>
                     <Input
-                      type="email"
+                      type="password"
                       className="bg-gray-100 border-none py-6"
                       placeholder="**********"
                       {...field}
@@ -114,10 +215,12 @@ export default function ForgotPassword() {
 
             <FormField
               control={form.control}
-              name="password"
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-md">Senha</FormLabel>
+                  <FormLabel className="text-md">
+                    Confirme sua nova Senha
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -151,6 +254,7 @@ export default function ForgotPassword() {
             </div>
           </div>
         </form>
+        <Toaster />
       </Form>
     </main>
   );

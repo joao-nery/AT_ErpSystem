@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export type User = {
   id: string;
@@ -24,7 +25,8 @@ export async function GetUserForUUID() {
   });
 
   if (!res.ok) {
-    throw new Error("Erro ao buscar o usuário");
+    console.error("Erro ao buscar o usuário");
+    redirect("/pages/login");
   }
 
   const dataUserID: User = await res.json();

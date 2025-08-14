@@ -6,6 +6,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -52,9 +53,6 @@ export default function ListProducts() {
 
   function formatDate(productCreateAt: string) {
     const date = new Date(productCreateAt);
-
-    console.log(date);
-
     const formatedDate = `${date.getDate().toString()}-${
       date.getMonth() + 1
     }-${date.getFullYear().toString()}`;
@@ -64,23 +62,37 @@ export default function ListProducts() {
 
   async function filterProducts(searchTerm: string) {
     const filteredProducts = products.filter((product) =>
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     setProducts(filteredProducts);
 
     if (searchTerm === "") {
       const token = await GetCookie();
-
       const response = await fetch("http://localhost:3001/products", {
         method: "GET",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error("Não há produtos");
+      }
+
+      const data = await response.json();
       setProducts(data);
     }
+  }
+
+  function CalculateQuantity() {
+    const filteredQuantity = products.map((item) => item.quantity);
+
+    return filteredQuantity.reduce(
+      (total, value) => Number(total) + Number(value),
+      0
+    );
   }
 
   async function deleteUser(id: string) {
@@ -123,39 +135,25 @@ export default function ListProducts() {
           onChange={(e) => filterProducts(e.target.value)}
         />
       </div>
-      <Table className="mt-10 rounded-2xl">
+      <Table>
         <TableCaption>Lista de Produtos</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="border-r">Descrição</TableHead>
-            <TableHead className="border-r">Fornecedor</TableHead>
-            <TableHead className="border-r">Código de Barras</TableHead>
-            <TableHead className="border-r">Referência</TableHead>
-            <TableHead className="border-r">Preço de Venda</TableHead>
-            <TableHead className="border-r">Preço de Compra</TableHead>
-            <TableHead className="border-r">Quantidade</TableHead>
-            <TableHead className="border-r">Categoria</TableHead>
-            <TableHead className="border-r">Tamanho</TableHead>
-            <TableHead className="border-r">Criado em</TableHead>
-            <TableHead className="border-r">Ações</TableHead>
+            <TableHead>Nome</TableHead>
+            <TableHead>Preço de Venda</TableHead>
+            <TableHead>Quantidade</TableHead>
+            <TableHead>Criado em</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {products.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{product.description}</TableCell>
-              <TableCell>{product.supplier}</TableCell>
-              <TableCell>{product.barCode}</TableCell>
-              <TableCell>{product.reference}</TableCell>
+              <TableCell>{product.name}</TableCell>
               <TableCell>
                 {product.salePrice.toString().replace(".", ",")}
               </TableCell>
-              <TableCell>
-                {product.purchasePrice.toString().replace(".", ",")}
-              </TableCell>
               <TableCell>{product.quantity}</TableCell>
-              <TableCell>{product.categories}</TableCell>
-              <TableCell>{product.size}</TableCell>
               <TableCell>{formatDate(product.createdAt)}</TableCell>
               <TableCell className="flex gap-4">
                 <Edit
@@ -175,6 +173,16 @@ export default function ListProducts() {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={5} className="text-center">
+              <div className="flex gap-10 items-center justify-center">
+                <span>Total de produtos: {products.length}</span>
+                <span>Quantidade em Estoque: {CalculateQuantity()}</span>
+              </div>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
       {editModal && (
         <EditProductModal

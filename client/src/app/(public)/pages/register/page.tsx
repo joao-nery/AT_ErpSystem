@@ -106,6 +106,7 @@ export default function RegisterPage() {
       toast.success("Cadastro Registrado com sucesso!", {
         richColors: true,
         duration: 3000,
+        position: "top-center",
         style: {
           display: "flex",
           justifyContent: "center",

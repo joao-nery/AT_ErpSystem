@@ -1,13 +1,7 @@
 export type ProductTypes = {
   id: string;
-  description: string;
-  supplier: string;
-  barCode: string;
-  reference: string;
-  salePrice: number;
-  purchasePrice: number;
-  quantity: number;
-  categories: string;
-  size: string;
+  name: string;
+  salePrice: number | string;
+  quantity: number | string;
   createdAt: string;
 };

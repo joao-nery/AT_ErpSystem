@@ -28,7 +28,7 @@ export class ProductsService {
 
     const exists = await this.productsRepository.findOneBy({
       owner: request.user.username,
-      barCode: createProductDto.barCode,
+      name: createProductDto.name,
     });
 
     if (exists) {
@@ -70,15 +70,9 @@ export class ProductsService {
     const updateProduct = await this.productsRepository.update(
       { id: id },
       {
-        barCode: updateProductDto.barCode,
-        categories: updateProductDto.categories,
-        description: updateProductDto.description,
-        purchasePrice: updateProductDto.purchasePrice,
+        name: updateProductDto.name,
         quantity: updateProductDto.quantity,
-        reference: updateProductDto.reference,
         salePrice: updateProductDto.salePrice,
-        size: updateProductDto.size,
-        supplier: updateProductDto.supplier,
       },
     );
 

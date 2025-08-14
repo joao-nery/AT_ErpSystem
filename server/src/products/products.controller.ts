@@ -35,7 +35,7 @@ export class ProductsController {
       throw new InternalServerErrorException('Erro no Servidor!');
     }
 
-    return created;
+    return { message: 'Produto criado com sucesso!', statusCode: 201 };
   }
 
   @Get()
@@ -51,8 +51,17 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    const product = await this.productsService.update(+id, updateProductDto);
+
+    if (!product) {
+      throw new InternalServerErrorException('Erro ao atualizar o produto');
+    }
+
+    return { message: 'Produto atualizado com sucesso!', statusCode: 200 };
   }
 
   @Delete(':id')

@@ -54,29 +54,56 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email) {
+  async findOneByEmail(email: string) {
     const user = await this.usersRepository.findOne({ where: { email } });
 
     return user;
   }
 
+  // --------------- Atualiza o usuário
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneByOrFail({ id });
 
-    const newHashedPassword = bcrypt.hashSync(
-      updateUserDto.password as string,
-      10,
-    );
+    const newHashedPassword = bcrypt.hashSync(updateUserDto.password, 10);
 
     const newUser = {
       ...user,
       email: updateUserDto.email,
       password: newHashedPassword,
     };
-    console.log(newUser);
-
     return this.usersRepository.save(newUser);
   }
+
+  // --------------- Atualiza Senha do usuário
+
+  async updatePassword(updateUserDto: UpdateUserDto) {
+    const user = await this.findOneByEmail(updateUserDto.email);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado!');
+    }
+
+    const verifyHashPassword = await bcrypt.compare(
+      updateUserDto.password,
+      user.password,
+    );
+
+    if (verifyHashPassword) {
+      throw new ConflictException('A senha já existe, faça login!');
+    }
+
+    const newHashedPassword = bcrypt.hashSync(updateUserDto.password, 10);
+
+    const newUser: User = {
+      ...user,
+      password: newHashedPassword,
+    };
+
+    return await this.usersRepository.save(newUser);
+  }
+
+  // --------------- Remove um usuário
 
   async remove(id: string) {
     const user = await this.usersRepository.findOneBy({ id });

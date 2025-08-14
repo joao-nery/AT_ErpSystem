@@ -12,22 +12,7 @@ export class Product {
   id: number;
 
   @Column()
-  description: string;
-
-  @Column({ type: 'bigint' })
-  barCode: number;
-
-  @Column()
-  reference: string;
-
-  @Column()
-  supplier: string;
-
-  @Column()
-  size: string;
-
-  @Column()
-  categories: string;
+  name: string;
 
   @Column()
   quantity: string;
@@ -37,9 +22,6 @@ export class Product {
 
   @Column()
   salePrice: string;
-
-  @Column({ type: 'float' })
-  purchasePrice: string;
 
   @Column({ default: true })
   isActive: boolean;

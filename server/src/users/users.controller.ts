@@ -92,6 +92,16 @@ export class UsersController {
     return response;
   }
 
+  @Patch('updatePassword')
+  async updatePassword(@Body() UpdateUserDto: UpdateUserDto) {
+    const user = await this.usersService.updatePassword(UpdateUserDto);
+    if (!user) {
+      throw new InternalServerErrorException('Erro ao atualizar a senha!');
+    }
+
+    return { message: 'Senha atualizada com sucesso!', statusCode: 200 };
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

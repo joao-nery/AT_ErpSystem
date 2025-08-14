@@ -24,8 +24,6 @@ export class AuthController {
     const userToken = this.jwtService.decode(authorization as string);
     const user = await this.usersServices.findOneByID(userToken.sub);
 
-    console.log(user);
-
     return user;
   }
 }

@@ -11,18 +11,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BoxesIcon, Edit, SearchIcon, Trash } from "lucide-react";
+import {
+  BoxesIcon,
+  CircleUserRound,
+  Edit,
+  Plus,
+  SearchIcon,
+  Trash,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditProductModal } from "./editProductModal";
 
 import type { ProductTypes } from "@/types/product.entity.types";
+import { Button } from "@/components/ui/button";
+import CreateProductModal from "./createProductModal";
 
 // Começo do Componente ----------------------------------------------------------
 
-export default function ListProducts() {
+export default function Products() {
   // modal
   const [product, setProduct] = useState("");
   const [editModal, setEditModal] = useState(false);
+  const [createProductsModal, setCreateProductsModal] = useState(false);
 
   // gerando a lista
   const [products, setProducts] = useState<ProductTypes[]>([]);
@@ -119,22 +129,38 @@ export default function ListProducts() {
 
   return (
     <main className="p-5">
-      <div className="flex gap-5 justify-center">
-        <h1 className="text-2xl font-semibold text-center">
-          Lista de Produtos
-        </h1>
-        <BoxesIcon size={40} />
-      </div>
-      <div className="flex items-center gap-2 mt-10">
-        <SearchIcon size={20} />
-        <label className="sr-only">Search</label>
-        <input
-          type="text"
-          placeholder="Pesquisar"
-          className=" p-3 border rounded-lg"
-          onChange={(e) => filterProducts(e.target.value)}
-        />
-      </div>
+      <section className="mb-10">
+        <div className="flex items-center gap-2">
+          <BoxesIcon size={40} />
+          <h1 className="text-2xl font-semibold text-center">Meus Produtos</h1>
+        </div>
+        <div className="flex items-center justify-between gap-2 mt-10">
+          <div className="flex items-center gap-2">
+            <SearchIcon size={20} />
+            <label className="sr-only">Search</label>
+            <input
+              type="text"
+              placeholder="Pesquisar"
+              className=" py-2 px-3 border rounded-lg"
+              onChange={(e) => filterProducts(e.target.value)}
+            />
+
+            {/* <Button>Filtrar por</Button> */}
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              className="cursor-pointer"
+              onClick={() => setCreateProductsModal(true)}>
+              Adicionar Produto
+              <Plus size={20} />
+            </Button>
+            {/* <Button onClick={}>importar Cliente</Button> */}
+          </div>
+        </div>
+      </section>
+
+      {/* Tabela de produtos */}
       <Table>
         <TableCaption>Lista de Produtos</TableCaption>
         <TableHeader>
@@ -184,12 +210,16 @@ export default function ListProducts() {
           </TableRow>
         </TableFooter>
       </Table>
+
+      {/* Modal de criação de produto */}
+      {createProductsModal && (
+        <CreateProductModal onClose={() => setCreateProductsModal(false)} />
+      )}
+
       {editModal && (
         <EditProductModal
-          onClose={() => {
-            setEditModal(false);
-          }}
-          id={product}
+          onClose={() => setEditModal(false)}
+          idProduct={product}
         />
       )}
     </main>

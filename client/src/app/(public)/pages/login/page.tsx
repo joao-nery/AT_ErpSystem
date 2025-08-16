@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { SetCookie } from "../../actions/set-cookie";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { GetUserForUUID } from "@/app/(erp)/core/actions/getuser";
 
 const formSchema = z.object({
   email: z
@@ -95,9 +96,19 @@ export default function LoginPage() {
       },
     });
 
-    setTimeout(() => {
-      router.push("/core");
-    }, 2000);
+    const user = await GetUserForUUID();
+
+    if (user.role == "admin") {
+      setTimeout(() => {
+        router.push("/admin");
+      }, 2000);
+    }
+
+    if (user.role == "user") {
+      setTimeout(() => {
+        router.push("/core");
+      }, 2000);
+    }
   }
 
   return (

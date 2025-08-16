@@ -12,7 +12,7 @@ export default function coreLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main>
+    <main suppressHydrationWarning>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SidebarProvider>
           <AppSidebar />

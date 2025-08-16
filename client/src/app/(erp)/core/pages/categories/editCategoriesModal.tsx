@@ -13,13 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import z, { set } from "zod";
+import z from "zod";
 
 import { CircleXIcon } from "lucide-react";
 import { MouseEventHandler, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { GetProductForUUID } from "@/app/(erp)/core/actions/getProduct";
 import { GetCookie } from "@/app/(erp)/core/actions/getCookie";
 import { toast, Toaster } from "sonner";
 
@@ -36,12 +35,12 @@ type FormProps = z.infer<typeof schema>;
 
 // Começo do Componente ----------------------------------------------------------
 
-export function EditProductModal({
+export function EditCategoriesModal({
   onClose,
-  id,
+  idCategory,
 }: {
   onClose: MouseEventHandler<SVGSVGElement>;
-  id: string;
+  idCategory: string;
 }) {
   const form = useForm<FormProps>({
     resolver: zodResolver(schema),
@@ -55,17 +54,17 @@ export function EditProductModal({
   // Busca os dados do produto pelo id
   useEffect(() => {
     async function updateForm() {
-      const product = await GetProductForUUID(id);
-      form.setValue("name", product.name);
-      form.setValue("quantity", product.quantity.toString());
-      form.setValue("salePrice", product.salePrice.toString());
+      // const category = await GetCategoryForUUID(idCategory);
+      // form.setValue("name", category.name);
+      // form.setValue("quantity", category.quantity.toString());
+      // form.setValue("salePrice", category.salePrice.toString());
     }
     updateForm();
-  }, [form, id]);
+  }, [form, idCategory]);
 
   async function onSubmit(values: FormProps) {
-    // atualizar o produto
-    const res = await fetch(`http://localhost:3001/products/${id}`, {
+    // atualizar a categoria
+    const res = await fetch(`http://localhost:3001/categories/${idCategory}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -97,18 +96,18 @@ export function EditProductModal({
   }
 
   return (
-    <main className="border w-[600px] p-10 absolute top-1/20 left-3/7 -translate-x-1/4 bg-white dark:bg-neutral-800 rounded-2xl z-50 ">
-      <div>
-        <h1 className="text-2xl mb-3 font-semibold">Editar Produto</h1>
-        <CircleXIcon
-          className="absolute top-5 right-5 text-destructive cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
+    <main>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col border gap-10 p-5 w-full  shadow rounded-2xl">
+          className="flex flex-col border gap-5 p-10 w-[700px] h-max shadow absolute top-[200px] left-[650px] z-50 bg-white dark:bg-neutral-800 rounded-lg">
+          <div>
+            <h1 className="text-2xl mb-3 font-semibold">Editar Produto</h1>
+            <CircleXIcon
+              className="absolute top-5 right-5 text-destructive cursor-pointer"
+              onClick={onClose}
+            />
+          </div>
           <FormField
             control={form.control}
             name="name"

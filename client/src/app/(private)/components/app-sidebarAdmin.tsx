@@ -8,6 +8,7 @@ import {
   ChevronRight,
   ChevronsUpDownIcon,
   HandCoinsIcon,
+  HandHelping,
   LogOutIcon,
   Users,
 } from "lucide-react";
@@ -28,6 +29,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -46,39 +48,13 @@ import type { User } from "@/app/(erp)/core/actions/getuser";
 const configsAppSidebar = [
   {
     module: "Meu Painel",
-    title: "Inicio",
-    icon: <ChartAreaIcon />,
-    lists: [{ title: "Dashboard", href: "/core" }],
-  },
-  {
-    module: "Dia a Dia",
-    title: "Operações",
-    icon: <HandCoinsIcon />,
-    lists: [
-      { title: "Registrar Venda", href: "/#" },
-      { title: "Contas a Pagar", href: "/#" },
-      { title: "Contas a Receber", href: "/#" },
-    ],
-  },
-  {
-    module: "Organização",
-    title: "Cadastros",
-    icon: <BoxIcon />,
-    lists: [
-      {
-        title: "Produtos",
-        href: "/core/pages/products",
-      },
-      {
-        title: "Clientes",
-        href: "/core/pages/customers",
-      },
-      { title: "Categorias", href: "/core/pages/categories" },
-    ],
+    title: "Manutenção",
+    icon: <HandHelping />,
+    lists: [{ title: "Ver Usuários", href: "/admin/user/listUsers" }],
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebarAdmin() {
   const [user, setUser] = useState<User[]>([]);
 
   useEffect(() => {
@@ -96,14 +72,17 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar variant="floating" collapsible="icon" suppressHydrationWarning>
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader>
         <SidebarMenuButton size="lg">
           <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             ⌘
           </div>
-          <div className="grid grid-cols-2 gap-1 flex-1 font-medium text-sm leading-tight ">
-            <Link href="/core">ERP System</Link>
+          <div className="flex-1 font-medium text-sm leading-tight ">
+            <Link href="/admin">ERP System</Link>
+            <p className="text-muted-foreground font-medium">
+              Painel administrativo
+            </p>
           </div>
         </SidebarMenuButton>
       </SidebarHeader>
@@ -143,18 +122,6 @@ export function AppSidebar() {
               </Collapsible>
             </SidebarMenu>
           </SidebarGroup>
-        ))}
-
-        {user.map((item, index) => (
-          <div key={index}>
-            {item.role == "admin" && (
-              <Link
-                href="/admin"
-                className="px-5 text-blue-400 hover:underline">
-                Painel administrativo
-              </Link>
-            )}
-          </div>
         ))}
       </SidebarContent>
 
@@ -196,7 +163,7 @@ export function AppSidebar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <BadgeCheck />
-                  <Link href="/core/pages/user/accountSettings">
+                  <Link href="/admin/user/accountSettings">
                     <span>Conta</span>
                   </Link>
                 </DropdownMenuItem>
@@ -208,7 +175,7 @@ export function AppSidebar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <LogOutIcon />
-                  <span onClick={signOut}>Sair</span>
+                  <a onClick={signOut}>Sair</a>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

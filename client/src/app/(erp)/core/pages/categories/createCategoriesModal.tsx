@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BoxIcon } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -24,48 +24,32 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "O nome do produto deve ter pelo menos 2 caracteres",
   }),
-
-  quantity: z.string().min(1, {
-    message: "A quantidade deve ser maior que 0",
-  }),
-
-  salePrice: z
-    .string()
-    .min(1, {
-      message: "O preço de venda deve ser maior que 0",
-    })
-    .regex(/^[0-9,]+(\.[0-9]{1,2})?$/, {
-      message: "O preço de venda deve ser um número",
-    }),
 });
 
 type FormProps = z.infer<typeof formSchema>;
 
-export default function Create() {
+export default function CreateCategoriesModal({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      quantity: "",
-      salePrice: "",
     },
   });
 
   async function onSubmit(values: FormProps) {
-    const newFixedObject = {
-      ...values,
-      salePrice: values.salePrice.replace(",", "."),
-    };
-
     const token = await GetCookie();
 
-    const res = await fetch("http://localhost:3001/products", {
+    const res = await fetch("http://localhost:3001/categories", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(newFixedObject),
+      body: JSON.stringify(values),
     });
 
     const data = await res.json();
@@ -83,8 +67,9 @@ export default function Create() {
           gap: "5px",
         },
       });
+
       setTimeout(() => {
-        form.reset();
+        window.location.reload();
       }, 1000);
     }
 
@@ -125,12 +110,15 @@ export default function Create() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col border gap-10 p-10  h-max shadow">
-          <div className="flex flex-col gap-2 items-center">
-            <BoxIcon size={30} />
-            <h1 className="text-xl font-semibold mb-5  text-center">
-              Cadastro de Produtos
-            </h1>
+          className="flex flex-col border gap-5 p-10 w-[700px] h-max shadow absolute top-[200px] left-[650px] z-50 bg-white dark:bg-neutral-800 rounded-lg">
+          <div className="flex justify-between">
+            <h1 className="text-xl font-semibold">Cadastro de Produtos</h1>
+            <button onClick={onClose}>
+              <CircleX
+                size={30}
+                className="text-gray-500 hover:text-gray-700 cursor-pointer"
+              />
+            </button>
           </div>
           <div className="grid grid-cols-1 gap-5">
             <FormField
@@ -138,43 +126,13 @@ export default function Create() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do Produto</FormLabel>
+                  <FormLabel>Nome da Categoria</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Nome do produto"
+                      placeholder="Nome da categoria"
                       type="text"
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="salePrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Preço de Venda</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Preço de Venda"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantidade</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Quantidade" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

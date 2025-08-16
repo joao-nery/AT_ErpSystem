@@ -1,15 +1,13 @@
-import { Category } from 'src/categories/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Product {
+export class Customer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,16 +15,16 @@ export class Product {
   name: string;
 
   @Column()
-  quantity: string;
+  email: string;
 
-  @ManyToOne(() => Category, (category) => category.name)
-  categories: Category;
+  @Column()
+  phone: string;
+
+  @Column()
+  notes: string;
 
   @Column()
   owner: string;
-
-  @Column()
-  salePrice: string;
 
   @Column({ default: true })
   isActive: boolean;

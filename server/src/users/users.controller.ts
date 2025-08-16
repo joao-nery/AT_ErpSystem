@@ -20,7 +20,6 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuards } from 'src/auth/guards/roles.guard';
 
 @Controller('users')
-// @UseGuards(AuthGuard('jwt'))
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -63,13 +62,14 @@ export class UsersController {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
         createAt: user.createAt,
         updateAt: user.updateAt,
       };
       return newObject;
     });
 
-    return { message: 'Lista de usuários cadastrados:', usuários: responseDto };
+    return { message: 'Lista de usuários cadastrados:', users: responseDto };
   }
 
   @UseGuards(AuthGuard('jwt'))

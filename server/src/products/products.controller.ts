@@ -46,7 +46,7 @@ export class ProductsController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const product = await this.productsService.findOne(+id);
+    const product = await this.productsService.findOne(id);
     return product;
   }
 
@@ -55,7 +55,7 @@ export class ProductsController {
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    const product = await this.productsService.update(+id, updateProductDto);
+    const product = await this.productsService.update(id, updateProductDto);
 
     if (!product) {
       throw new InternalServerErrorException('Erro ao atualizar o produto');
@@ -66,6 +66,6 @@ export class ProductsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+    return this.productsService.remove(id);
   }
 }

@@ -21,8 +21,18 @@ export class AuthController {
   @Get('token')
   async getUserForToken(@Req() request: Request) {
     const { authorization } = request.headers;
-    const userToken = this.jwtService.decode(authorization as string);
+
+    const userToken = await this.jwtService.decode(authorization as string);
+
+    if (!userToken) {
+      throw new Error('Token inválido');
+    }
+
     const user = await this.usersServices.findOneByID(userToken.sub);
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
 
     return user;
   }

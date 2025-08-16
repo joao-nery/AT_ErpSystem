@@ -56,7 +56,7 @@ export class ProductsService {
     return products;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const product = await this.productsRepository.findOneBy({ id });
 
     if (!product) {
@@ -66,7 +66,7 @@ export class ProductsService {
     return product;
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto) {
     const updateProduct = await this.productsRepository.update(
       { id: id },
       {
@@ -79,7 +79,7 @@ export class ProductsService {
     return updateProduct;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     const product = this.productsRepository.delete({ id });
     return product;
   }

@@ -23,6 +23,8 @@ type User = {
 export default function ListUsers() {
   const [users, setUsers] = useState<User[]>([]);
 
+  console.log(users);
+
   useEffect(() => {
     async function fetchUsers() {
       const token = await GetCookie();

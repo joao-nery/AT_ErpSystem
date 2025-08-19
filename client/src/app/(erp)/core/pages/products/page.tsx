@@ -37,6 +37,8 @@ export default function Products() {
   // gerando a lista
   const [products, setProducts] = useState<ProductTypes[]>([]);
 
+  console.log(products.map((item, index) => item.category.name));
+
   useEffect(() => {
     async function fetchProducts() {
       const token = await GetCookie();
@@ -168,6 +170,7 @@ export default function Products() {
             <TableHead>Nome</TableHead>
             <TableHead>Preço de Venda</TableHead>
             <TableHead>Quantidade</TableHead>
+            <TableHead>Categoria</TableHead>
             <TableHead>Criado em</TableHead>
             <TableHead>Ações</TableHead>
           </TableRow>
@@ -180,6 +183,7 @@ export default function Products() {
                 {product.salePrice.toString().replace(".", ",")}
               </TableCell>
               <TableCell>{product.quantity}</TableCell>
+              <TableCell>{product.category.name}</TableCell>
               <TableCell>{formatDate(product.createdAt)}</TableCell>
               <TableCell className="flex gap-4">
                 <Edit
@@ -201,7 +205,7 @@ export default function Products() {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={5} className="text-center">
+            <TableCell colSpan={6} className="text-center">
               <div className="flex gap-10 items-center justify-center">
                 <span>Total de produtos: {products.length}</span>
                 <span>Quantidade em Estoque: {CalculateQuantity()}</span>

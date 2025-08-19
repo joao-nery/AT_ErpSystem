@@ -55,7 +55,7 @@ export default function CreateCategoriesModal({
     const data = await res.json();
 
     if (data.statusCode === 201) {
-      toast.success("Produto cadastrado com sucesso!", {
+      toast.success("Categoria cadastrada com sucesso!", {
         position: "top-center",
         duration: 2000,
         richColors: true,
@@ -74,7 +74,7 @@ export default function CreateCategoriesModal({
     }
 
     if (data.statusCode === 400) {
-      toast.error("Erro ao cadastrar produto!", {
+      toast.error("Erro ao cadastrar categoria!", {
         position: "top-center",
         duration: 2000,
         richColors: true,

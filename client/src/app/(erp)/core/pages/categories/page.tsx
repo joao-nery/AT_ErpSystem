@@ -11,18 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  BoxesIcon,
-  CircleUserRound,
-  Edit,
-  LayoutList,
-  Plus,
-  SearchIcon,
-  Trash,
-} from "lucide-react";
+import { Edit, LayoutList, Plus, SearchIcon, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { ProductTypes } from "@/types/product.entity.types";
+import type { Category } from "@/types/category.entity.types";
 import { Button } from "@/components/ui/button";
 import CreateCategoryModal from "./createCategoriesModal";
 import { EditCategoriesModal } from "./editCategoriesModal";
@@ -36,7 +28,7 @@ export default function Categories() {
   const [createCategoriesModal, setCreateCategoriesModal] = useState(false);
 
   // gerando a lista
-  const [categories, setCategories] = useState<ProductTypes[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -56,9 +48,8 @@ export default function Categories() {
 
       const data = await response.json();
 
-      setCategories(data);
+      setCategories(data.categories);
     }
-
     fetchCategories();
   }, []);
 
@@ -93,7 +84,7 @@ export default function Categories() {
       }
 
       const data = await response.json();
-      setCategories(data);
+      setCategories(data.categories);
     }
   }
 
@@ -157,8 +148,7 @@ export default function Categories() {
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>Preço de Venda</TableHead>
-            <TableHead>Quantidade</TableHead>
+            <TableHead>Quantidade de Produtos</TableHead>
             <TableHead>Criado em</TableHead>
             <TableHead>Ações</TableHead>
           </TableRow>
@@ -167,9 +157,6 @@ export default function Categories() {
           {categories.map((category) => (
             <TableRow key={category.id}>
               <TableCell>{category.name}</TableCell>
-              <TableCell>
-                {category.salePrice.toString().replace(".", ",")}
-              </TableCell>
               <TableCell>{category.quantity}</TableCell>
               <TableCell>{formatDate(category.createdAt)}</TableCell>
               <TableCell className="flex gap-4">

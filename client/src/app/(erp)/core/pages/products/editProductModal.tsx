@@ -16,12 +16,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 
 import { CircleXIcon } from "lucide-react";
-import { MouseEventHandler, useEffect } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { GetProductForUUID } from "@/app/(erp)/core/actions/getProduct";
 import { GetCookie } from "@/app/(erp)/core/actions/getCookie";
 import { toast, Toaster } from "sonner";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "@/components/ui/select";
+import { Category } from "@/types/category.entity.types";
 
 const schema = z.object({
   name: z
@@ -29,6 +38,7 @@ const schema = z.object({
     .min(2, { message: "Nome do produto deve ter pelo menos 2 caracteres." })
     .max(100),
   quantity: z.string().min(1, { message: "Quantidade é obrigatória." }),
+  categories: z.string(),
   salePrice: z.string().min(1, { message: "Preço de venda é obrigatório." }),
 });
 
@@ -48,9 +58,12 @@ export function EditProductModal({
     defaultValues: {
       name: "",
       quantity: "",
+      categories: "",
       salePrice: "",
     },
   });
+
+  const [categories, setCategories] = useState<Category[]>([]);
 
   // Busca os dados do produto pelo id
   useEffect(() => {
@@ -61,10 +74,27 @@ export function EditProductModal({
       form.setValue("quantity", product.quantity.toString());
       form.setValue("salePrice", product.salePrice.toString());
     }
+
+    async function getCategories() {
+      const res = await fetch("http://localhost:3001/categories", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await GetCookie()}`,
+        },
+      });
+
+      const data = await res.json();
+      setCategories(data.categories);
+    }
+
+    getCategories();
+
     updateForm();
   }, [form, idProduct]);
 
   async function onSubmit(values: FormProps) {
+    console.log(values);
     // atualizar o produto
     const res = await fetch(`http://localhost:3001/products/${idProduct}`, {
       method: "PATCH",
@@ -138,6 +168,35 @@ export function EditProductModal({
                   />
                 </FormControl>
                 <FormMessage className="text-[12px]" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="categories"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Categoria</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione uma categoria" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map((category, index) => (
+                      <SelectGroup key={index}>
+                        <SelectItem value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                      </SelectGroup>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
               </FormItem>
             )}
           />

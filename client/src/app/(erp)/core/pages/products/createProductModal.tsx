@@ -16,9 +16,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { BoxIcon, CircleX } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect, useState } from "react";
+import { Category } from "@/types/category.entity.types";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -28,6 +38,8 @@ const formSchema = z.object({
   quantity: z.string().min(1, {
     message: "A quantidade deve ser maior que 0",
   }),
+
+  categoryId: z.string(),
 
   salePrice: z
     .string()
@@ -46,20 +58,42 @@ export default function CreateProductModal({
 }: {
   onClose: () => void;
 }) {
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const form = useForm<FormProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       quantity: "",
       salePrice: "",
+      categoryId: "",
     },
   });
+
+  useEffect(() => {
+    async function getCategories() {
+      const res = await fetch("http://localhost:3001/categories", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${await GetCookie()}`,
+        },
+      });
+
+      const data = await res.json();
+      setCategories(data.categories);
+    }
+
+    getCategories();
+  }, []);
 
   async function onSubmit(values: FormProps) {
     const newFixedObject = {
       ...values,
       salePrice: values.salePrice.replace(",", "."),
     };
+
+    console.log(newFixedObject);
 
     const token = await GetCookie();
 
@@ -175,6 +209,36 @@ export default function CreateProductModal({
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoria</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma categoria" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category, index) => (
+                        <SelectGroup key={index}>
+                          <SelectItem value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        </SelectGroup>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="quantity"

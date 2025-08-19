@@ -53,6 +53,8 @@ export class UsersController {
   async findAll() {
     const users = await this.usersService.findAll();
 
+    console.log(users);
+
     if (!users) {
       throw new NotFoundException('Não foi possivel encontrar usuários!');
     }

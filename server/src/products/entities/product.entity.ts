@@ -19,8 +19,8 @@ export class Product {
   @Column()
   quantity: string;
 
-  @ManyToOne(() => Category, (category) => category.name)
-  categories: Category;
+  @ManyToOne(() => Category, (category) => category.products)
+  category: Category;
 
   @Column()
   owner: string;

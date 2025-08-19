@@ -41,6 +41,7 @@ export class ProductsController {
   @Get()
   async findAll(@Req() request: Request) {
     const products = await this.productsService.findAll(request);
+
     return products;
   }
 

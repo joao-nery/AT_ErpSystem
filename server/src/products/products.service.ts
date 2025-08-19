@@ -95,7 +95,6 @@ export class ProductsService {
       {
         name: updateProductDto.name,
         quantity: updateProductDto.quantity,
-        salePrice: updateProductDto.salePrice,
       },
     );
 

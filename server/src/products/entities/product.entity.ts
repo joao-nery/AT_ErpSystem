@@ -20,7 +20,7 @@ export class Product {
   quantity: string;
 
   @ManyToOne(() => Category, (category) => category.products)
-  category: Category;
+  category?: Category | null;
 
   @Column()
   owner: string;

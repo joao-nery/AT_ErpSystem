@@ -9,9 +9,8 @@ export class CreateProductDto {
   @IsNotEmpty({ message: 'A quantidade nao pode ser vazio' })
   quantity: string;
 
-  @IsString({ message: 'A quantidade precisa ser uma string' })
-  @IsNotEmpty({ message: 'A quantidade nao pode ser vazio' })
-  categoryId: string;
+  @IsString({ message: 'A categoria precisa ser uma string' })
+  categoryId?: string;
 
   @IsString({ message: 'O preco de venda precisa ser uma string' })
   @IsNotEmpty({ message: 'O preco de venda nao pode ser vazio' })

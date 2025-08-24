@@ -17,16 +17,24 @@ export class CategoriesService {
     private readonly categoriesRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto, request) {
+    const { name } = createCategoryDto;
+
     const exists = await this.categoriesRepository.findOneBy({
       name: createCategoryDto.name,
+      owner: request.user.username,
     });
 
     if (exists) {
       throw new ConflictException('Categoria já existente!');
     }
 
-    const created = await this.categoriesRepository.save(createCategoryDto);
+    const category = this.categoriesRepository.create({
+      name,
+      owner: request.user.username,
+    });
+
+    const created = await this.categoriesRepository.save(category);
 
     if (!created) {
       throw new InternalServerErrorException('Erro ao cadastrar categoria!');
@@ -35,24 +43,10 @@ export class CategoriesService {
     return created;
   }
 
-  async findAllWithProductCount(): Promise<Category[]> {
-    return this.categoriesRepository
-      .createQueryBuilder('category') // 'category' é um alias para a tabela Category
-      .loadRelationCountAndMap('category.quantity', 'category.products') // Mágica acontece aqui!
-      .getMany();
-  }
-
-  // Exemplo para buscar uma única categoria com a contagem
-  async findOneWithProductCount(id: string): Promise<any> {
-    return this.categoriesRepository
-      .createQueryBuilder('category')
-      .where('category.id = :id', { id })
-      .loadRelationCountAndMap('category.quantity', 'category.products')
-      .getOne();
-  }
-
-  async findAll() {
-    const categories = await this.categoriesRepository.find();
+  async findAll(request) {
+    const categories = await this.categoriesRepository.find({
+      where: { owner: request.user.username },
+    });
 
     if (!categories) {
       throw new BadGatewayException('Erro ao buscar as categorias');
@@ -61,15 +55,34 @@ export class CategoriesService {
     return categories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string, request) {
+    const category = await this.categoriesRepository.findOneBy({
+      id: id,
+      owner: request.user.username,
+    });
+
+    if (!category) {
+      throw new InternalServerErrorException('Erro ao buscar categoria');
+    }
+
+    return category;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryDto: CreateCategoryDto) {
+    const updated = await this.categoriesRepository.update(
+      { id: id },
+      { name: updateCategoryDto.name },
+    );
+
+    if (!updated) {
+      throw new Error('Erro ao atualizar categoria!');
+    }
+
+    return updated;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  remove(id: string) {
+    const product = this.categoriesRepository.delete({ id });
+    return product;
   }
 }

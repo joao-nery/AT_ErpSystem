@@ -28,19 +28,16 @@ export class ProductsService {
     const { name, quantity, salePrice } = createProductDto;
 
     const category = await this.categoryRepository.findOneBy({
-      id: createProductDto.categoryId,
+      id: createProductDto.categoryId ? createProductDto.categoryId : undefined,
+      owner: request.user.username,
     });
-
-    if (!category) {
-      throw new NotFoundException('Categoria não encontrada');
-    }
 
     const product = this.productsRepository.create({
       name,
       quantity,
       salePrice,
       owner: request.user.username,
-      category: category,
+      category: category ? category : undefined,
     });
 
     const exists = await this.productsRepository.findOneBy({
@@ -70,8 +67,6 @@ export class ProductsService {
       relations: ['category'],
     });
 
-    products.map((item, index) => console.log(item));
-
     if (!products) {
       throw new BadRequestException('Erro ao buscar produtos!');
     }
@@ -89,12 +84,13 @@ export class ProductsService {
   }
 
   // Atualizar Produtos
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto, request) {
     const updateProduct = await this.productsRepository.update(
-      { id: id },
+      { id: id, owner: request.user.username },
       {
         name: updateProductDto.name,
         quantity: updateProductDto.quantity,
+        salePrice: updateProductDto.salePrice,
       },
     );
 

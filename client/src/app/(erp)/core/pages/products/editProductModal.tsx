@@ -38,7 +38,7 @@ const schema = z.object({
     .min(2, { message: "Nome do produto deve ter pelo menos 2 caracteres." })
     .max(100),
   quantity: z.string().min(1, { message: "Quantidade é obrigatória." }),
-  categories: z.string(),
+  categoryId: z.string(),
   salePrice: z.string().min(1, { message: "Preço de venda é obrigatório." }),
 });
 
@@ -58,7 +58,7 @@ export function EditProductModal({
     defaultValues: {
       name: "",
       quantity: "",
-      categories: "",
+      categoryId: "",
       salePrice: "",
     },
   });
@@ -94,18 +94,36 @@ export function EditProductModal({
   }, [form, idProduct]);
 
   async function onSubmit(values: FormProps) {
-    console.log(values);
     // atualizar o produto
+
     const res = await fetch(`http://localhost:3001/products/${idProduct}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${await GetCookie()}`,
       },
+
       body: JSON.stringify(values),
     });
 
+    if (!res.ok) {
+      toast.error("Erro ao atualizar produto!", {
+        duration: 2000,
+        position: "top-center",
+        richColors: true,
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "15px",
+          alignItems: "center",
+          gap: "5px",
+        },
+      });
+    }
+
     const data = await res.json();
+
+    console.log(data);
 
     if (data.statusCode === 200) {
       toast.success("Produto atualizado com sucesso!", {
@@ -174,7 +192,7 @@ export function EditProductModal({
 
           <FormField
             control={form.control}
-            name="categories"
+            name="categoryId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Categoria</FormLabel>

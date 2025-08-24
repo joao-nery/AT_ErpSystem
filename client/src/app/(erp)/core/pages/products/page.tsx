@@ -11,14 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  BoxesIcon,
-  CircleUserRound,
-  Edit,
-  Plus,
-  SearchIcon,
-  Trash,
-} from "lucide-react";
+import { BoxesIcon, Edit, Plus, SearchIcon, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EditProductModal } from "./editProductModal";
 
@@ -37,7 +30,7 @@ export default function Products() {
   // gerando a lista
   const [products, setProducts] = useState<ProductTypes[]>([]);
 
-  console.log(products.map((item, index) => item.category.name));
+  console.log(products);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -57,7 +50,7 @@ export default function Products() {
 
       const data = await response.json();
 
-      setProducts(data);
+      setProducts(data.data);
     }
 
     fetchProducts();
@@ -157,7 +150,6 @@ export default function Products() {
               Adicionar Produto
               <Plus size={20} />
             </Button>
-            {/* <Button onClick={}>importar Cliente</Button> */}
           </div>
         </div>
       </section>
@@ -183,7 +175,11 @@ export default function Products() {
                 {product.salePrice.toString().replace(".", ",")}
               </TableCell>
               <TableCell>{product.quantity}</TableCell>
-              <TableCell>{product.category.name}</TableCell>
+              <TableCell>
+                {product.category?.name
+                  ? product.category.name
+                  : "Sem Categoria"}
+              </TableCell>
               <TableCell>{formatDate(product.createdAt)}</TableCell>
               <TableCell className="flex gap-4">
                 <Edit

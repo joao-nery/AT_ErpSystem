@@ -124,7 +124,7 @@ export function EditCustomerModal({
   }
 
   return (
-    <main className="">
+    <main>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

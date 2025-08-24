@@ -18,10 +18,13 @@ import type { Category } from "@/types/category.entity.types";
 import { Button } from "@/components/ui/button";
 import CreateCategoryModal from "./createCategoriesModal";
 import { EditCategoriesModal } from "./editCategoriesModal";
+import { GetAllCategories } from "./getCategories";
 
 // Começo do Componente ----------------------------------------------------------
 
 export default function Categories() {
+  // getToken
+
   // modal
   const [category, setCategory] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -31,26 +34,13 @@ export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    async function fetchCategories() {
-      const token = await GetCookie();
+    async function carregador() {
+      const categorias = await GetAllCategories();
 
-      const response = await fetch("http://localhost:3001/categories", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Não há produtos");
-      }
-
-      const data = await response.json();
-
-      setCategories(data.categories);
+      setCategories(categorias.categories);
     }
-    fetchCategories();
+
+    carregador();
   }, []);
 
   function formatDate(categoryCreateAt: string) {
@@ -148,7 +138,6 @@ export default function Categories() {
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>Quantidade de Produtos</TableHead>
             <TableHead>Criado em</TableHead>
             <TableHead>Ações</TableHead>
           </TableRow>
@@ -157,7 +146,6 @@ export default function Categories() {
           {categories.map((category) => (
             <TableRow key={category.id}>
               <TableCell>{category.name}</TableCell>
-              <TableCell>{category.quantity}</TableCell>
               <TableCell>{formatDate(category.createdAt)}</TableCell>
               <TableCell className="flex gap-4">
                 <Edit

@@ -55,7 +55,7 @@ export default function LoginPage() {
     });
 
     if (!res.ok) {
-      toast.error("Usuário não existente, realize o cadastro", {
+      toast.error("Usuário não existente, ou Credenciais inválidas", {
         position: "top-center",
         duration: 2000,
         richColors: true,
@@ -72,10 +72,6 @@ export default function LoginPage() {
     const { access_token } = await res.json();
 
     if (!access_token) {
-      setTimeout(() => {
-        router.push("/pages/register");
-      }, 2000);
-
       throw new Error("Token de acesso não encontrado");
     }
 

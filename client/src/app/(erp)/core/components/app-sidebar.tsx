@@ -55,9 +55,9 @@ const configsAppSidebar = [
     title: "Operações",
     icon: <HandCoinsIcon />,
     lists: [
-      { title: "Registrar Venda", href: "/#" },
-      { title: "Contas a Pagar", href: "/#" },
-      { title: "Contas a Receber", href: "/#" },
+      { title: "Registrar Venda", href: "/core/pages/sale" },
+      { title: "Contas a Pagar", href: "/core/pages/accounts_payable" },
+      { title: "Contas a Receber", href: "/core/pages/accounts_receivable" },
     ],
   },
   {
